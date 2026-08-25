@@ -21,7 +21,42 @@ client.on('messageCreate', message => {
   }
 });
 
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName !== 'translate') return;
+
+  const targetLang = interaction.options.getString('to');
+  const text = interaction.options.getString('message');
+
+  await interaction.deferReply();
+
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${targetLang}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.responseStatus !== 200) {
+      throw new Error('Translation failed');
+    }
+
+    const translated = data.responseData.translatedText;
+
+    await interaction.editReply({
+      embeds: [{
+        color: 0x5865F2,
+        fields: [
+          { name: 'Original', value: text },
+          { name: 'Translation', value: translated }
+        ],
+        footer: { text: `Translated by ${interaction.user.username}` }
+      }]
+    });
+  } catch (err) {
+    console.error(err);
+    await interaction.editReply('❌ Translation failed. Please try again.');
+  }
+});
+
 client.login(process.env.DISCORD_TOKEN);
 
-// Petit serveur HTTP pour que Koyeb sache que le bot est vivant
 http.createServer((req, res) => res.end('Bot en ligne')).listen(process.env.PORT || 8000);
