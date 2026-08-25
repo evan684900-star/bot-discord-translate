@@ -31,25 +31,17 @@ client.on('interactionCreate', async interaction => {
   await interaction.deferReply();
  
   try {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      }
-    });
- 
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json') && !contentType.includes('text/javascript') && !contentType.includes('text/plain')) {
-      const raw = await res.text();
-      console.error('Réponse non-JSON reçue:', raw.slice(0, 300));
-      throw new Error('Service de traduction indisponible (réponse invalide)');
-    }
- 
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}&de=evan684900@gmail.com`;
+    const res = await fetch(url);
     const data = await res.json();
  
-    console.log('Google Translate response:', JSON.stringify(data));
+    console.log('MyMemory response:', JSON.stringify(data));
  
-    const translated = data[0].map(chunk => chunk[0]).join('');
+    if (data.responseStatus !== 200) {
+      throw new Error('Translation failed: ' + (data.responseDetails || JSON.stringify(data)));
+    }
+ 
+    const translated = data.responseData.translatedText;
  
     await interaction.editReply({
       embeds: [{
