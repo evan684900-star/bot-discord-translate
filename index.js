@@ -1,5 +1,3 @@
-
-Index.JS
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const http = require('http');
