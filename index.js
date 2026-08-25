@@ -30,18 +30,14 @@ client.on('interactionCreate', async interaction => {
 
   await interaction.deferReply();
 
-  try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}&de=evan684900@gmail.com`;
+    try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
     const res = await fetch(url);
     const data = await res.json();
 
-    console.log('MyMemory response:', JSON.stringify(data));
+    console.log('Google Translate response:', JSON.stringify(data));
 
-    if (data.responseStatus !== 200) {
-      throw new Error('Translation failed: ' + (data.responseDetails || JSON.stringify(data)));
-    }
-
-    const translated = data.responseData.translatedText;
+    const translated = data[0].map(chunk => chunk[0]).join('');
 
     await interaction.editReply({
       embeds: [{
