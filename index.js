@@ -31,11 +31,13 @@ client.on('interactionCreate', async interaction => {
   await interaction.deferReply();
 
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`;    const res = await fetch(url);
+        const res = await fetch(url);
     const data = await res.json();
 
+    console.log('MyMemory response:', JSON.stringify(data));
+
     if (data.responseStatus !== 200) {
-      throw new Error('Translation failed');
+      throw new Error('Translation failed: ' + (data.responseDetails || JSON.stringify(data)));
     }
 
     const translated = data.responseData.translatedText;
