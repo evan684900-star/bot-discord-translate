@@ -31,7 +31,7 @@ client.on('interactionCreate', async interaction => {
   await interaction.deferReply();
 
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}&de=evan684900@gmail.com`;
     const res = await fetch(url);
     const data = await res.json();
 
