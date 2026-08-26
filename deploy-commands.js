@@ -13,18 +13,7 @@ const commands = [
           { name: 'English', value: 'en' },
           { name: 'French', value: 'fr' },
           { name: 'Spanish', value: 'es' },
-          { name: 'German', value: 'de' },
-          { name: 'Italian', value: 'it' },
-          { name: 'Portuguese', value: 'pt' },
-          { name: 'Dutch', value: 'nl' },
-          { name: 'Russian', value: 'ru' },
-          { name: 'Japanese', value: 'ja' },
-          { name: 'Korean', value: 'ko' },
-          { name: 'Chinese', value: 'zh' },
-          { name: 'Arabic', value: 'ar' },
-          { name: 'Turkish', value: 'tr' },
-          { name: 'Polish', value: 'pl' },
-          { name: 'Swedish', value: 'sv' }
+          { name: 'German', value: 'de' }
         ))
     .addStringOption(option =>
       option.setName('message')
